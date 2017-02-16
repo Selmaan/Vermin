@@ -1,4 +1,4 @@
-function code = SC_switchingChambers_hideTarget
+function code = switchingChambers_revealTarget
 % Linear Track   Code for the ViRMEn experiment Linear Track.
 %   code = Linear Track   Returns handles to the functions that ViRMEn
 %   executes during engine initialization, runtime and termination.
@@ -53,8 +53,19 @@ if rand < vr.fractionNoChecker
     vr.currentWorld = vr.currentWorld + 4;
 end
 
+outputSingleScan(vr.aoSync,-5);
+vr.SyncState = 1;
+
 % --- RUNTIME code: executes on every iteration of the ViRMEn engine.
 function vr = runtimeCodeFun(vr)
+
+if vr.SyncState == 1
+    outputSingleScan(vr.aoSync,5);
+    vr.SyncState = 0;
+else
+    outputSingleScan(vr.aoSync,0);
+    vr.SyncState = 1;
+end
 
 % collect behavior data
 vr = collectBehaviorIter(vr);
